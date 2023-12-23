@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/wel"
+    tools:context=".WelcomeActivity"
+    >
+
+
+    <!-- Your layout XML file (e.g., activity_main.xml) -->
+
+    <Button
+        android:id="@+id/customerLogin_btn"
+        android:layout_width="172dp"
+        android:layout_height="79dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:text="@string/customer_login" />
+
+    <Button
+        android:id="@+id/driverLogin_btn"
+        android:layout_width="172dp"
+        android:layout_height="79dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:text="@string/driver_login" />
+
+</RelativeLayout>

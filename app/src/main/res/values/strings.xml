@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MedCab</string>
+    <string name="register_now">Register Now</string>
+    <string name="new_user">New User ?</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="enter_e_mail">Enter E-Mail</string>
+    <string name="customer_login">Customer Login</string>
+    <string name="driver_login">Driver Login</string>
+</resources>
