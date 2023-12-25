@@ -7,4 +7,5 @@
     <string name="enter_e_mail">Enter E-Mail</string>
     <string name="customer_login">Customer Login</string>
     <string name="driver_login">Driver Login</string>
+    <string name="title_activity_drivers_map">DriversMapActivity</string>
 </resources>

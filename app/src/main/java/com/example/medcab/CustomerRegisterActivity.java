@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -69,20 +70,70 @@ public class CustomerRegisterActivity extends AppCompatActivity {
             }
         });
 
+        customerLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = customerEmail.getText().toString();
+                String password = customerPassword.getText().toString();
+
+                SignInCustomer(email,password);
+            }
+        });
+
+    }
+
+    private void SignInCustomer(String email, String password) {
+
+        if (TextUtils.isEmpty(email)){
+            Toast.makeText(CustomerRegisterActivity.this, "Please Enter Your Email !", Toast.LENGTH_SHORT).show();
+        }
+
+        if (TextUtils.isEmpty(password)){
+            Toast.makeText(CustomerRegisterActivity.this, "Please Enter Your Password !", Toast.LENGTH_SHORT).show();
+        }
+
+        else{
+
+            loadingBar.setTitle("Customer Login");
+            loadingBar.setMessage("Please Wait");
+            loadingBar.show();
+
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+
+                            if(task.isSuccessful()){
+                                Toast.makeText(CustomerRegisterActivity.this, "Customer Logged-In Successfully ! ", Toast.LENGTH_SHORT).show();
+                                loadingBar.dismiss();
+                            }
+
+                            else{
+                                Toast.makeText(CustomerRegisterActivity.this, "Customer Login Unsuccessful, Please try again", Toast.LENGTH_SHORT).show();
+                                loadingBar.dismiss();
+                            }
+
+                        }
+
+                    });
+        }
+
     }
 
     private void RegisterCustomer(String email, String password) {
 
-        if (TextUtils.isEmpty(email)) {
+        if (TextUtils.isEmpty(email)){
             Toast.makeText(CustomerRegisterActivity.this, "Please Enter Your Email !", Toast.LENGTH_SHORT).show();
         }
 
-        if (TextUtils.isEmpty(password)) {
+        if (TextUtils.isEmpty(password)){
             Toast.makeText(CustomerRegisterActivity.this, "Please Enter Your Password !", Toast.LENGTH_SHORT).show();
-        } else {
+        }
+
+        else{
 
             loadingBar.setTitle("Customer Registration");
-            loadingBar.setMessage("PLease wait while we register your data");
+            loadingBar.setMessage("Please Wait");
             loadingBar.show();
 
             mAuth.createUserWithEmailAndPassword(email, password)
@@ -90,17 +141,18 @@ public class CustomerRegisterActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
-                            if (task.isSuccessful()) {
-                                Toast.makeText(CustomerRegisterActivity.this, "Customer Register Successful ! ", Toast.LENGTH_SHORT).show();
+                            if(task.isSuccessful()){
+                                Toast.makeText(CustomerRegisterActivity.this, "Customer Registered Successful ! ", Toast.LENGTH_SHORT).show();
                                 loadingBar.dismiss();
-                            } else {
-                                Toast.makeText(CustomerRegisterActivity.this, "Customer Register Unsuccessful", Toast.LENGTH_SHORT).show();
+                            }
+
+                            else{
+                                Toast.makeText(CustomerRegisterActivity.this, "Customer Registration Unsuccessful", Toast.LENGTH_SHORT).show();
                                 loadingBar.dismiss();
                             }
 
                         }
                     });
-
         }
     }
 }
