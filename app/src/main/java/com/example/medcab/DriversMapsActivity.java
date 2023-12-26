@@ -20,6 +20,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.medcab.databinding.ActivityDriversMapsBinding;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
 
 public class DriversMapsActivity extends FragmentActivity implements OnMapReadyCallback,
         com.google.android.gms.location.LocationListener {
@@ -32,6 +39,9 @@ public class DriversMapsActivity extends FragmentActivity implements OnMapReadyC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Add Firebase initialization if not present
+        FirebaseApp.initializeApp(this);
 
         binding = ActivityDriversMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -93,12 +103,27 @@ public class DriversMapsActivity extends FragmentActivity implements OnMapReadyC
 
     @Override
     public void onLocationChanged(Location location) {
-        // Handle location changes if needed
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String userID = currentUser.getUid();
 
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
+            // Update the user's location in the database
+            DatabaseReference driversLocationRef = FirebaseDatabase.getInstance().getReference().child("driversLocation").child(userID);
+            GeoFire geoFire = new GeoFire(driversLocationRef);
+            geoFire.setLocation(userID, new GeoLocation(location.getLatitude(), location.getLongitude()));
+        }
     }
 
-    // Add your permission request handling code here
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String userID = currentUser.getUid();
+
+            // Remove the user's location from the database
+            DatabaseReference driversLocationRef = FirebaseDatabase.getInstance().getReference().child("driversLocation").child(userID);
+            driversLocationRef.removeValue();
+        }
+    }
 }
