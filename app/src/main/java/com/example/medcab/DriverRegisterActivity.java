@@ -29,9 +29,9 @@ public class DriverRegisterActivity extends AppCompatActivity
     private EditText driverPassword;
     private FirebaseAuth mAuth;
     private ProgressDialog loadingBar;
-    
-    
-    
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,40 +52,40 @@ public class DriverRegisterActivity extends AppCompatActivity
         driverRegisterButton.setVisibility(View.INVISIBLE);
         driverRegisterButton.setEnabled(false);
 
-    driverRegisterLink.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
+        driverRegisterLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-            driverLoginButton.setVisibility(View.INVISIBLE);
-            driverRegisterLink.setVisibility(View.INVISIBLE);
-            driverStatus.setText("Register Driver");
+                driverLoginButton.setVisibility(View.INVISIBLE);
+                driverRegisterLink.setVisibility(View.INVISIBLE);
+                driverStatus.setText("Register Driver");
 
-            driverRegisterButton.setVisibility(View.VISIBLE);
-            driverRegisterButton.setEnabled(true);
-            
-        }
-    });
+                driverRegisterButton.setVisibility(View.VISIBLE);
+                driverRegisterButton.setEnabled(true);
 
-    driverRegisterButton.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            String email = driverEmail.getText().toString();
-            String password = driverPassword.getText().toString();
+            }
+        });
 
-            RegisterDriver(email,password);
-        }
-    });
+        driverRegisterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = driverEmail.getText().toString();
+                String password = driverPassword.getText().toString();
 
-    driverLoginButton.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
+                RegisterDriver(email,password);
+            }
+        });
 
-            String email = driverEmail.getText().toString();
-            String password = driverPassword.getText().toString();
+        driverLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-            SignInDriver(email,password);
-        }
-    });
+                String email = driverEmail.getText().toString();
+                String password = driverPassword.getText().toString();
+
+                SignInDriver(email,password);
+            }
+        });
 
     }
 
@@ -114,7 +114,7 @@ public class DriverRegisterActivity extends AppCompatActivity
                                 Toast.makeText(DriverRegisterActivity.this, "Driver Logged-In Successfully ! ", Toast.LENGTH_SHORT).show();
                                 loadingBar.dismiss();
 
-                                Intent driverIntent = new Intent(DriverRegisterActivity.this,DriversMapActivity.class);
+                                Intent driverIntent = new Intent(DriverRegisterActivity.this,DriversMapsActivity.class);
                                 startActivity(driverIntent);
 
                             }
@@ -156,7 +156,7 @@ public class DriverRegisterActivity extends AppCompatActivity
                                 Toast.makeText(DriverRegisterActivity.this, "Driver Registered Successful ! ", Toast.LENGTH_SHORT).show();
                                 loadingBar.dismiss();
 
-                                Intent driverIntent = new Intent(DriverRegisterActivity.this,DriversMapActivity.class);
+                                Intent driverIntent = new Intent(DriverRegisterActivity.this,DriversMapsActivity.class);
                                 startActivity(driverIntent);
 
                             }
@@ -169,5 +169,5 @@ public class DriverRegisterActivity extends AppCompatActivity
                         }
                     });
         }
-        }
     }
+}
