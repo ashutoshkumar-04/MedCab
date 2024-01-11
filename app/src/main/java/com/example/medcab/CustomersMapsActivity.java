@@ -19,21 +19,21 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.example.medcab.databinding.ActivityDriversMapsBinding;
+import com.example.medcab.databinding.ActivityCustomersMapsBinding;
 
-public class DriversMapsActivity extends FragmentActivity implements OnMapReadyCallback,
+public class CustomersMapsActivity extends FragmentActivity implements OnMapReadyCallback,
         com.google.android.gms.location.LocationListener {
 
     private GoogleMap mMap;
     private FusedLocationProviderClient fusedLocationClient;
     private LocationRequest locationRequest;
-    private ActivityDriversMapsBinding binding;
+    private ActivityCustomersMapsBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityDriversMapsBinding.inflate(getLayoutInflater());
+        binding = ActivityCustomersMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.

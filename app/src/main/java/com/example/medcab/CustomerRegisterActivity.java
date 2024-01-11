@@ -36,14 +36,13 @@ public class CustomerRegisterActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        customerLoginButton = (Button) findViewById(R.id.customerLoginButton);
-        customerRegisterButton = (Button) findViewById(R.id.customer_register_btn);
-        customerRegisterLink = (TextView) findViewById(R.id.register_customer_link);
-        customerStatus = (TextView) findViewById(R.id.customerLoginStatus);
-        customerEmail = (EditText) findViewById(R.id.customerLoginEmail);
-        customerPassword = (EditText) findViewById(R.id.customerLoginPassword);
+        customerLoginButton = findViewById(R.id.customerLoginButton);
+        customerRegisterButton = findViewById(R.id.customer_register_btn);
+        customerRegisterLink = findViewById(R.id.register_customer_link);
+        customerStatus = findViewById(R.id.customerLoginStatus);
+        customerEmail = findViewById(R.id.customerLoginEmail);
+        customerPassword = findViewById(R.id.customerLoginPassword);
         loadingBar = new ProgressDialog(this);
-
 
         customerRegisterButton.setVisibility(View.INVISIBLE);
         customerRegisterButton.setEnabled(false);
@@ -66,7 +65,7 @@ public class CustomerRegisterActivity extends AppCompatActivity {
                 String email = customerEmail.getText().toString();
                 String password = customerPassword.getText().toString();
 
-                RegisterCustomer(email, password);
+                registerCustomer(email, password);
             }
         });
 
@@ -76,83 +75,62 @@ public class CustomerRegisterActivity extends AppCompatActivity {
                 String email = customerEmail.getText().toString();
                 String password = customerPassword.getText().toString();
 
-                SignInCustomer(email,password);
+                signInCustomer(email, password);
             }
         });
-
     }
 
-    private void SignInCustomer(String email, String password) {
-
-        if (TextUtils.isEmpty(email)){
-            Toast.makeText(CustomerRegisterActivity.this, "Please Enter Your Email !", Toast.LENGTH_SHORT).show();
+    private void signInCustomer(String email, String password) {
+        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+            Toast.makeText(CustomerRegisterActivity.this, "Please enter valid email and password!", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-        if (TextUtils.isEmpty(password)){
-            Toast.makeText(CustomerRegisterActivity.this, "Please Enter Your Password !", Toast.LENGTH_SHORT).show();
-        }
+        loadingBar.setTitle("Customer Login");
+        loadingBar.setMessage("Please Wait");
+        loadingBar.show();
 
-        else{
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        loadingBar.dismiss();
+                        if (task.isSuccessful()) {
+                            Toast.makeText(CustomerRegisterActivity.this, "Customer Logged-In Successfully!", Toast.LENGTH_SHORT).show();
 
-            loadingBar.setTitle("Customer Login");
-            loadingBar.setMessage("Please Wait");
-            loadingBar.show();
-
-            mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-
-                            if(task.isSuccessful()){
-                                Toast.makeText(CustomerRegisterActivity.this, "Customer Logged-In Successfully ! ", Toast.LENGTH_SHORT).show();
-                                loadingBar.dismiss();
-                            }
-
-                            else{
-                                Toast.makeText(CustomerRegisterActivity.this, "Customer Login Unsuccessful, Please try again", Toast.LENGTH_SHORT).show();
-                                loadingBar.dismiss();
-                            }
-
+                            Intent customerIntent = new Intent(CustomerRegisterActivity.this, CustomersMapsActivity.class);
+                            startActivity(customerIntent);
+                        } else {
+                            Toast.makeText(CustomerRegisterActivity.this, "Customer Login Unsuccessful, Please try again", Toast.LENGTH_SHORT).show();
                         }
-
-                    });
-        }
-
+                    }
+                });
     }
 
-    private void RegisterCustomer(String email, String password) {
-
-        if (TextUtils.isEmpty(email)){
-            Toast.makeText(CustomerRegisterActivity.this, "Please Enter Your Email !", Toast.LENGTH_SHORT).show();
+    private void registerCustomer(String email, String password) {
+        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+            Toast.makeText(CustomerRegisterActivity.this, "Please enter valid email and password!", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-        if (TextUtils.isEmpty(password)){
-            Toast.makeText(CustomerRegisterActivity.this, "Please Enter Your Password !", Toast.LENGTH_SHORT).show();
-        }
+        loadingBar.setTitle("Customer Registration");
+        loadingBar.setMessage("Please Wait");
+        loadingBar.show();
 
-        else{
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        loadingBar.dismiss();
+                        if (task.isSuccessful()) {
+                            Toast.makeText(CustomerRegisterActivity.this, "Customer Registered Successfully!", Toast.LENGTH_SHORT).show();
 
-            loadingBar.setTitle("Customer Registration");
-            loadingBar.setMessage("Please Wait");
-            loadingBar.show();
-
-            mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-
-                            if(task.isSuccessful()){
-                                Toast.makeText(CustomerRegisterActivity.this, "Customer Registered Successful ! ", Toast.LENGTH_SHORT).show();
-                                loadingBar.dismiss();
-                            }
-
-                            else{
-                                Toast.makeText(CustomerRegisterActivity.this, "Customer Registration Unsuccessful", Toast.LENGTH_SHORT).show();
-                                loadingBar.dismiss();
-                            }
-
+                            Intent customerIntent = new Intent(CustomerRegisterActivity.this, CustomersMapsActivity.class);
+                            startActivity(customerIntent);
+                        } else {
+                            Toast.makeText(CustomerRegisterActivity.this, "Customer Registration Unsuccessful", Toast.LENGTH_SHORT).show();
                         }
-                    });
-        }
+                    }
+                });
     }
 }
